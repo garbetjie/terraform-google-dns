@@ -8,8 +8,8 @@ resource google_dns_managed_zone managed_zone {
 resource google_dns_record_set dns_records {
   for_each = local.record_sets
   managed_zone = google_dns_managed_zone.managed_zone.name
-  name = "${split("/", each.key)[1]}${google_dns_managed_zone.managed_zone.name}"
-  rrdatas = each.value.rrdatas
+  name = split("/", each.key)[1] == "" ? google_dns_managed_zone.managed_zone.dns_name : "${split("/", each.key)[1]}${google_dns_managed_zone.managed_zone.dns_name}"
+  rrdatas = each.value.rrdata
   type = split("/", each.key)[0]
   ttl = lookup(each.value, "ttl", 300)
 }

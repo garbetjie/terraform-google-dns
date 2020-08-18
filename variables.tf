@@ -13,22 +13,22 @@ variable description {
 }
 
 variable A {
-  type = map(object({ rrdatas = list(string) }))
+  type = map(object({ rrdata = list(string) }))
   default = {}
 }
 
 variable CNAME {
-  type = map(object({ rrdatas = list(string) }))
+  type = map(object({ rrdata = list(string) }))
   default = {}
 }
 
 variable TXT {
-  type = map(object({ rrdatas = list(string) }))
+  type = map(object({ rrdata = list(string) }))
   default = {}
 }
 
 variable NS {
-  type = map(object({ rrdatas = list(string) }))
+  type = map(object({ rrdata = list(string) }))
   default = {}
 }
 
@@ -44,19 +44,19 @@ locals {
   record_sets = merge(
     {
       for key, value in var.A:
-        each.key == "" || each.key == "@" ? "A/" : "A/${trimsuffix(each.key, ".")}" => value
+        key == "" || key == "@" ? "A/" : "A/${trimsuffix(key, ".")}." => value
     },
     {
       for key, value in var.CNAME:
-        each.key == "" || each.key == "@" ? "CNAME/" : "CNAME/${trimsuffix(each.key, ".")}" => value
+        key == "" || key == "@" ? "CNAME/" : "CNAME/${trimsuffix(key, ".")}." => value
     },
     {
       for key, value in var.TXT:
-        each.key == "" || each.key == "@" ? "TXT/" : "TXT/${trimsuffix(each.key, ".")}" => value
+        key == "" || key == "@" ? "TXT/" : "TXT/${trimsuffix(key, ".")}." => value
     },
     {
       for key, value in var.NS:
-        each.key == "" || each.key == "@" ? "NS/" : "NS/${trimsuffix(each.key, ".")}" => value
+        key == "" || key == "@" ? "NS/" : "NS/${trimsuffix(key, ".")}." => value
     }
   )
 }
