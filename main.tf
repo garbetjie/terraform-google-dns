@@ -6,10 +6,10 @@ resource google_dns_managed_zone managed_zone {
 }
 
 resource google_dns_record_set dns_records {
-  for_each = local.record_sets
+  for_each = local.records
   managed_zone = google_dns_managed_zone.managed_zone.name
-  name = split("/", each.key)[1] == "" ? google_dns_managed_zone.managed_zone.dns_name : "${split("/", each.key)[1]}${google_dns_managed_zone.managed_zone.dns_name}"
-  rrdatas = each.value.rrdata
-  type = split("/", each.key)[0]
-  ttl = lookup(each.value, "ttl", 300)
+  name = "${each.value.name}${google_dns_managed_zone.managed_zone.dns_name}"
+  rrdatas = each.value.rrdatas
+  type = each.value.type
+  ttl = lookup(each.value, "ttl", var.default_ttl)
 }
