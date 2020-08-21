@@ -22,6 +22,11 @@ variable default_ttl {
   default = 300
 }
 
+variable dnssec_enabled {
+  type = bool
+  default = false
+}
+
 variable records {
   type = list(object({ type = string, name = string, rrdatas = list(string), ttl = number }))
   default = []

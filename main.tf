@@ -3,6 +3,9 @@ resource google_dns_managed_zone managed_zone {
   name = var.name == null ? replace(local.domain_without_dot, ".", "-") : var.name
   description = var.description == null ? "Managed zone for ${local.domain_without_dot} (managed by terraform)" : var.description
   labels = var.labels
+  dnssec_config {
+    state = var.dnssec_enabled ? "on" : "off"
+  }
 }
 
 resource google_dns_record_set dns_records {
