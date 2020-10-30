@@ -5,3 +5,7 @@ output name_servers {
 output domain {
   value = local.domain_without_dot
 }
+
+output network_urls {
+  value = local.network_urls
+}

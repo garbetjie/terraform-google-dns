@@ -1,10 +1,33 @@
+data google_project current_project {
+
+}
+
 resource google_dns_managed_zone managed_zone {
   dns_name = "${local.domain_without_dot}."
   name = var.name == null ? replace(local.domain_without_dot, ".", "-") : var.name
   description = var.description == null ? "Managed zone for ${local.domain_without_dot} (managed by terraform)" : var.description
   labels = var.labels
-  dnssec_config {
-    state = var.dnssec_enabled ? "on" : "off"
+
+  dynamic "dnssec_config" {
+    for_each = var.private ? [] : [var.dnssec_enabled ? "on" : "off"]
+    content {
+      state = dnssec_config.value
+    }
+  }
+
+  // Private DNS configuration.
+  visibility = var.private ? "private" : "public"
+
+  dynamic "private_visibility_config" {
+    for_each = var.private ? [1] : []
+    content {
+      dynamic "networks" {
+        for_each = local.network_urls
+        content {
+          network_url = networks.value
+        }
+      }
+    }
   }
 }
 
