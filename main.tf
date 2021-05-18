@@ -30,10 +30,11 @@ resource google_dns_managed_zone managed_zone {
 }
 
 resource google_dns_record_set dns_records {
-  for_each = local.records
+  for_each = { for record in local.records: format("%s/%s", record.type, record.name) => record }
+
   managed_zone = google_dns_managed_zone.managed_zone.name
   name = "${each.value.name}${google_dns_managed_zone.managed_zone.dns_name}"
   rrdatas = each.value.rrdatas
   type = each.value.type
-  ttl = lookup(each.value, "ttl", var.default_ttl)
+  ttl = each.value.ttl
 }

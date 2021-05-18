@@ -46,8 +46,19 @@ variable networks {
 }
 
 variable records {
-  type = list(object({ type = string, name = string, rrdatas = list(string), ttl = number }))
+  type = list(object({
+    type = string,
+    name = string,
+    rrdatas = optional(list(string)),
+    ttl = optional(number)
+  }))
+
   default = []
   description = "Records to add to the managed zone."
 }
 
+variable lowercase {
+  type = bool
+  default = true
+  description = "Force values in records to be lowercase (excludes the values for TXT and SPF record types)."
+}
