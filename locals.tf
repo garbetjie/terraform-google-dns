@@ -6,7 +6,7 @@ locals {
     name = record.name == null || record.name == "@" || record.name == "" ? "" : "${trimsuffix(record.name, ".")}.",
     type = upper(record.type)
     ttl = lookup(record, "ttl", var.default_ttl)
-    rrdatas = lookup(record, "rrdatas", [])
+    rrdatas = lookup(record, "rrdatas", []) == null ? [] : lookup(record, "rrdatas", [])
   }]
 
   // Then, go and modify case if necessary.

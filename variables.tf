@@ -6,7 +6,7 @@ variable domain {
 variable name {
   type = string
   default = null
-  description = "Name of the managed zone. Defaults to $${replace(var.domain, \".\", \"-\")}."
+  description = "Name of the managed zone."
 }
 
 variable description {
@@ -24,13 +24,13 @@ variable labels {
 variable default_ttl {
   type = number
   default = 300
-  description = "Default TTL to use for records when records.ttl is defined as `null`."
+  description = "Default TTL to use for records when `records.*.ttl` is not supplied."
 }
 
 variable dnssec_enabled {
   type = bool
   default = false
-  description = "Whether or not to enable DNSSEC. Ignored when var.private is true."
+  description = "Whether or not to enable DNSSEC. Ignored when `var.private` is true."
 }
 
 variable private {
@@ -42,14 +42,14 @@ variable private {
 variable networks {
   type = list(string)
   default = []
-  description = "List of networks in which to ensure the managed zone is available when it is a private zone."
+  description = "List of networks in which to ensure the managed zone is available when it is a private zone. Values can either be a network name in the current provider project, or a network ID for a network in a different project."
 }
 
 variable records {
   type = list(object({
     type = string,
     name = string,
-    rrdatas = optional(list(string)),
+    rrdatas = list(string),
     ttl = optional(number)
   }))
 

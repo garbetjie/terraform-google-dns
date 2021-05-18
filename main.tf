@@ -1,5 +1,3 @@
-
-
 resource google_dns_managed_zone managed_zone {
   dns_name = "${local.domain_without_dot}."
   name = var.name == null ? replace(local.domain_without_dot, ".", "-") : var.name
