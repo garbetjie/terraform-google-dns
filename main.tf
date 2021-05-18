@@ -1,6 +1,4 @@
-data google_project current_project {
 
-}
 
 resource google_dns_managed_zone managed_zone {
   dns_name = "${local.domain_without_dot}."
