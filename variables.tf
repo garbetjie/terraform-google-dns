@@ -40,13 +40,13 @@ variable private {
 }
 
 variable networks {
-  type = list(string)
+  type = set(string)
   default = []
   description = "List of networks in which to ensure the managed zone is available when it is a private zone. Values can either be a network name in the current provider project, or a network ID for a network in a different project."
 }
 
 variable records {
-  type = list(object({
+  type = set(object({
     type = string,
     name = string,
     rrdatas = list(string),

@@ -1,7 +1,7 @@
 resource google_dns_managed_zone managed_zone {
   dns_name = "${local.domain_without_dot}."
-  name = var.name == null ? replace(local.domain_without_dot, ".", "-") : var.name
-  description = var.description == null ? "Managed zone for ${local.domain_without_dot} (managed by terraform)" : var.description
+  name = coalesce(var.name, replace(local.domain_without_dot, ".", "-"))
+  description = coalesce(var.description, "Managed zone for ${local.domain_without_dot} (managed by terraform)")
   labels = var.labels
 
   dynamic "dnssec_config" {
@@ -18,7 +18,7 @@ resource google_dns_managed_zone managed_zone {
     for_each = var.private ? [1] : []
     content {
       dynamic "networks" {
-        for_each = local.network_urls
+        for_each = var.networks
         content {
           network_url = networks.value
         }

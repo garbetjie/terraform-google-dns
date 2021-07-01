@@ -9,7 +9,7 @@ output domain {
 }
 
 output network_urls {
-  value = google_dns_managed_zone.managed_zone.private_visibility_config.networks.*.network_url
+  value = google_dns_managed_zone.managed_zone.private_visibility_config[0].networks.*.network_url
   description = "Links of networks the managed zone is available in."
 }
 
@@ -34,7 +34,7 @@ output default_ttl {
 }
 
 output dnssec_enabled {
-  value = google_dns_managed_zone.managed_zone.dnssec_config.state == "on"
+  value = length(google_dns_managed_zone.managed_zone.dnssec_config) > 0 ? google_dns_managed_zone.managed_zone.dnssec_config[0].state == "on" : false
   description = "Whether or not DNSSEC is enabled on the managed zone."
 }
 
