@@ -76,4 +76,3 @@ All inputs are exported as outputs. There are additional outputs as defined belo
 |--------------|-----------------------------------------------------|
 | domain       | Domain used for this managed zone.                  |
 | name_servers | Name servers to be used for this managed zone.      |
-| network_urls | Links of networks the managed zone is available in. |

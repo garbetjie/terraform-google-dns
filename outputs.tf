@@ -9,7 +9,7 @@ output domain {
 }
 
 output network_urls {
-  value = google_dns_managed_zone.managed_zone.private_visibility_config[0].networks.*.network_url
+  value = toset(length(google_dns_managed_zone.managed_zone.private_visibility_config) > 0 ? google_dns_managed_zone.managed_zone.private_visibility_config[0].networks.*.network_url : [])
   description = "Links of networks the managed zone is available in."
 }
 
@@ -44,8 +44,8 @@ output private {
 }
 
 output networks {
-  value = var.networks
-  description = "Network the managed zone is available in, as provided."
+  value = toset(length(google_dns_managed_zone.managed_zone.private_visibility_config) > 0 ? google_dns_managed_zone.managed_zone.private_visibility_config[0].networks.*.network_url : [])
+  description = "Links of networks the managed zone is available in."
 }
 
 output records {
